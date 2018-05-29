@@ -1,0 +1,45 @@
+.currency-view {
+  display: flex;
+  flex-flow: row wrap;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: stretch;
+  /* align-items: center; */
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.block-list-container,
+.txn-list-container {
+  align-self: start;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.block-list-header,
+.txn-list-header {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 0 20px;
+  line-height: 50px;
+
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+@media all and (min-width: 600px) {
+    .block-list-container,
+    .txn-list-container {
+      flex: 1 auto;
+    }
+}
+
+@media all and (min-width: 800px) {
+  .block-list-container,
+  .txn-list-container {
+    flex: 2 auto;
+    max-width: 500px;
+  }
+}

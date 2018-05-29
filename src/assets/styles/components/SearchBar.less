@@ -1,0 +1,43 @@
+@import '../shared.less';
+
+.nrl-searchbar {
+  font-family: 'Source Sans Pro', sans-serif;
+
+  &.ant-input-search .ant-input{
+    padding-right: 125px;
+    padding-left: 15px;
+    border-color: @border-main-color;
+
+    &:focus,&:hover {
+      border-color: @border-focus-color;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  .ant-input-search-button {
+    width: 125px;
+    font-weight: bold;
+    background-color: @btn-primary-color;
+    border-color: @btn-primary-color;
+
+    &:hover {
+      border-color: rgba(0,0,0,0.3);
+    }
+  }
+
+  &:hover,&:focus {
+    border-color: rgba(0,0,0,0.3);
+
+    &.ant-input-search .ant-input{
+      padding-right: 125px;
+      border-color: @border-main-color;
+
+      &:focus,&:hover {
+        border-color: @border-focus-color;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+  }
+}

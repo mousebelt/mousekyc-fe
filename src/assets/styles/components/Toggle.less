@@ -1,0 +1,27 @@
+@import '../shared.less';
+
+.nrl-toggle {
+  &.ant-switch{
+    border: 1px solid @border-main-color;
+    background-color: @bg-main-color;
+    height: 29px;
+    min-width: 52px;
+    
+    &::after {
+      background-color: @btn-default-color;
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  &.ant-switch-checked {
+    border: 1px solid @border-grey-color;
+
+    &::after {
+      left: 100%;
+      margin-left: -26px;
+      background-color: @btn-primary-color;
+    }
+  }
+}
+
