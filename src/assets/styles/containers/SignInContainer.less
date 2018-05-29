@@ -1,0 +1,61 @@
+.block {
+  width: 420px;
+  height: 530px;
+  margin: 0 auto;
+  background-color: @nrl-white;
+  border: 1px solid @border-light-color;
+
+  .header {
+    background-color: @nrl-white;
+  }
+
+  .main {
+    background-color: @nrl-white;
+
+    .logo_area {
+      margin-top: 40px;
+
+      .logo {
+        width: 95px;
+        height: 100px;
+      }
+    
+      .title_area {
+        margin-top: 12px;
+      
+        .logo_title {
+          font-size: 36px;
+          font-weight: 900;
+          font-family: inherit;
+          color: @nrl-red;
+        }
+      
+        .row_title {
+          height: 30px;
+        }
+      }
+    }
+
+    .email_area {
+      margin-top: 25px;
+      margin-bottom: 25px;
+
+      input {
+        height: 42px !important;
+      }
+
+      .label_name {
+        font-size: 10px;
+        margin-left: 15px;
+      }
+    }
+
+    .continue_btn {
+      width: 100%;
+      height: 42px;
+      background-color: @border-light-color;
+      border-color: @nrl-white;
+      font-size: 12px;
+    }
+  }
+}
