@@ -8,6 +8,8 @@ import { isEqual } from 'lodash';
 import { connectSettings, settingsActionCreators } from 'core';
 
 import SignInContainer from 'containers/SignInContainer/SignInContainer';
+import ValidationContainer from 'containers/ValidationContainer/ValidationContainer';
+import UploadDocContainer from 'containers/UploadDocContainer/UploadDocContainer';
 
 class RoutesContainer extends PureComponent {
 
@@ -21,6 +23,8 @@ class RoutesContainer extends PureComponent {
     return (
       <Switch>
         <Route exact path="/signin" component={SignInContainer}/>
+        <Route exact path="/validation" component={ValidationContainer}/>
+        <Route exact path="/upload" component={UploadDocContainer}/>
         <Redirect to="/404"/>
       </Switch>
     )
