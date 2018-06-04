@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'; 
-import { withRouter } from 'react-router-dom';
 import { Icon, Row, Col, Button, Input, Layout } from 'antd';
 import { connectSettings } from 'core';
 import logo from 'assets/img/logo.png';

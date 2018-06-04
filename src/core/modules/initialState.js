@@ -1,5 +1,3 @@
-import { coins, defaultCoin } from 'config';
-
 const settings = {
   
 };
