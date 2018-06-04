@@ -10,6 +10,7 @@ import { connectSettings, settingsActionCreators } from 'core';
 import SignInContainer from 'containers/SignInContainer/SignInContainer';
 import ValidationContainer from 'containers/ValidationContainer/ValidationContainer';
 import UploadDocContainer from 'containers/UploadDocContainer/UploadDocContainer';
+import TakePhotoContainer from 'containers/TakePhotoContainer/TakePhotoContainer';
 
 class RoutesContainer extends PureComponent {
 
@@ -25,6 +26,7 @@ class RoutesContainer extends PureComponent {
         <Route exact path="/signin" component={SignInContainer}/>
         <Route exact path="/validation" component={ValidationContainer}/>
         <Route exact path="/upload" component={UploadDocContainer}/>
+        <Route exact path="/upload/take_photo" component={TakePhotoContainer}/>
         <Redirect to="/404"/>
       </Switch>
     )

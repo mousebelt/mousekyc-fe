@@ -8,18 +8,30 @@ import UploadDocument from '../../components/UploadDocument/UploadDocument';
 
 const { Content, Header, Footer } = Layout;
 
-class UploadDocContainer extends PureComponent {
+class TakePhotoContainer extends PureComponent {
 
   constructor(props) {
     super(props);
+    this.state = {
+      imageSrc: ''
+    }
   }
 
-  showTakePhotoPage = () => {
-    this.props.history.push('upload/take_photo');
+  setRef = (webcam) => {
+    this.webcam = webcam;
+  }
+
+  takePicture = () => {
+    const imageSrc = this.webcam.getScreenshot();
+    this.setState(...this.state, {imageSrc: imageSrc});
+  }
+
+  RetakePicture = () => {
+    this.setState(...this.state, {imageSrc: null});
   }
 
   back = () => {
-    this.props.history.push('/validation');
+    this.props.history.push('/upload');
   }
 
   render () {
@@ -43,21 +55,33 @@ class UploadDocContainer extends PureComponent {
                 </Col>
               </Row>
               <Row  className="validation_title_area">
-                <Col span={12} offset={6}>
-                    <span className="validation_choose_title">&ensp;Upload&ensp;Document</span>
+                <Col span={12} offset={7}>
+                    <span className="validation_choose_title">&ensp;Take&ensp;A&ensp;Picture</span>
                 </Col>
               </Row>  
-              <Row className="upload_area">
+              <Row className="preview_camera">
                 <Col offset={4} span={16}>
-                  <UploadDocument />
+                  {
+                    !this.state.imageSrc ?
+                  <Webcam className="webcam"
+                    audio={false}
+                    ref={this.setRef}
+                    screenshotFormat="image/jpeg"
+                  /> :
+                  <img className="screenshot" src={this.state.imageSrc}/>
+                  }
                 </Col>
               </Row>
               <Row className="upload_btn_area">
                 <Col className="take_area" offset={4} span={8}>
-                  <Button className="take_btn" onClick={this.showTakePhotoPage}>Take a Picture<Icon style={{ fontSize: 16, color: '#ffffff'}} type="camera" /></Button>
+                  <Button disabled={this.state.imageSrc ? true : false} className="take_btn" onClick={this.takePicture}>
+                    Take a Picture<Icon style={{ fontSize: 16, color: '#ffffff'}} type="camera" />
+                  </Button>
                 </Col>
                 <Col className="preview_area" span={8}>
-                  <Button className="preview_btn">Preview<Icon style={{ fontSize: 16, color: '#ffffff'}} type="eye" /></Button>
+                  <Button disabled={!this.state.imageSrc ? true : false} className="preview_btn" onClick={this.RetakePicture}>
+                    Retake<Icon style={{ fontSize: 16, color: '#ffffff'}} type="eye" />
+                  </Button>
                 </Col>
               </Row>
               <Row>
@@ -76,4 +100,4 @@ const mapStateToProps = ({}) => ({
   
 });
 
-export default connectSettings(mapStateToProps, {})(UploadDocContainer);
+export default connectSettings(mapStateToProps, {})(TakePhotoContainer);
