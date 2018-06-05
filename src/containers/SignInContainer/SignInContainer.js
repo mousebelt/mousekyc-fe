@@ -1,17 +1,27 @@
 import React, { PureComponent } from 'react'; 
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { Icon, Row, Col, Button, Input, Layout } from 'antd';
-import { connectSettings } from 'core';
+import { connectAuth, authActionCreators } from 'core';
 import logo from 'assets/img/logo.png';
 
-const { Content, Header, Footer } = Layout;
+const { Content, Header } = Layout;
 
 class SignInContainer extends PureComponent {
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        token: PropTypes.string,
+      }),
+    }).isRequired
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       isFocus: false
     }
+    console.log(this.props.match.params.token);
   }
 
   handleEmail = () => {
@@ -30,11 +40,11 @@ class SignInContainer extends PureComponent {
           <Layout>
             <Content className="main">
               <Row className="sign_logo_area">
-                <Col span={5} offset={5}>
-                  <img src={logo} className="logo"/>
+                <Col span={5} offset={5}connectAuth>
+                  <img alt="true" src={logo} className="logo"/>
                 </Col>
                 <Col span={12} className="title_area">
-                  <Row className="row_title"><Col><span  className="logo_title">NO REST</span></Col></Row>
+                  <Row className="authActionCreatorsrow_titlbindActionCreatorse"><Col><span  className="logo_title">NO REST</span></Col></Row>
                   <Row className="row_title"><Col><span className="logo_title">LABS</span></Col></Row>
                 </Col>
               </Row>
@@ -60,8 +70,14 @@ class SignInContainer extends PureComponent {
     );
   }  
 }
-const mapStateToProps = ({settings}) => ({
-  currency: settings.currency
-});
+const mapDisptachToProps = (dispatch) => {
+  const {
+    login
+  } = authActionCreators;
 
-export default connectSettings(mapStateToProps, {})(SignInContainer);
+  return bindActionCreators({
+    login
+  }, dispatch);
+}
+
+export default connectAuth(undefined, mapDisptachToProps)(SignInContainer);

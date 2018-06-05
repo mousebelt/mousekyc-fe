@@ -28,7 +28,7 @@ class UploadDocument extends PureComponent {
     return (
       <div className="upload">
         <input type="file" ref={input => this.inputElement = input} onChange={this.fileChangedHandler}/>
-        <img src={uploadIcon} className="upload_icon" onClick={this.chooseFile}/>
+        <img alt="true" src={uploadIcon} className="upload_icon" onClick={this.chooseFile}/>
         <p className="upload_choose_title">
           {
             this.state.selectedFile ? <span>&ensp;&ensp;&ensp;&ensp;{this.state.selectedFile.name}</span>: 'Choose a document'

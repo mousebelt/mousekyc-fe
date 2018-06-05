@@ -22,10 +22,10 @@ class DocumentSelect extends PureComponent {
     return (
       <div className='doc'>
         <div className={this.state.docType === 'passport' ? 'doc_passport_selection' : 'doc_passport'} onClick = {() => this.chooseDocument('passport')}>
-          <img src={passport} className={this.state.docType === 'passport' ? 'doc_passport_img_selection' : 'doc_passport_img'} />
+          <img alt="true" src={passport} className={this.state.docType === 'passport' ? 'doc_passport_img_selection' : 'doc_passport_img'} />
         </div>
         <div className={this.state.docType === 'idcard' ? 'doc_id_selection' : 'doc_id'} onClick = {() => this.chooseDocument('idcard')}>
-          <img src={idcard} className={this.state.docType === 'idcard' ? 'doc_id_img_selection' : 'doc_id_img'} />
+          <img alt="true" src={idcard} className={this.state.docType === 'idcard' ? 'doc_id_img_selection' : 'doc_id_img'} />
         </div>
       </div>
     );

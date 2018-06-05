@@ -1,11 +1,9 @@
 import {
   LOGIN_REQUEST_SUCCESS,
 } from './actions';
-import { defaultReducers } from '../defaultReducers';
+import { initialState } from '../initialState';
 
-const DEFAULT = defaultReducers.auth;
-
-export default function auth(state = DEFAULT, action = {}) {
+export default function auth(state = initialState.user, action = {}) {
   const { type, payload } = action;
 
   switch (type) {

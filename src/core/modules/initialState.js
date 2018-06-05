@@ -1,7 +1,7 @@
-const settings = {
+const user = {
   
 };
 
 export const initialState = {
-  settings
+  user
 };
