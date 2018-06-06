@@ -5,6 +5,7 @@
   "dependencies": {
     "ajv": "^6.5.0",
     "antd": "^3.4.4",
+    "axios": "^0.18.0",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.10",
     "query-string": "^6.1.0",

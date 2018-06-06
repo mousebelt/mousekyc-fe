@@ -18,6 +18,12 @@ class UploadDocument extends PureComponent {
     const formData = new FormData()
     formData.append('myFile', this.state.selectedFile, this.state.selectedFile.name)
     // axios.post('my-domain.com/file-upload', formData)
+
+    // axios.post('my-domain.com/file-upload', formData, {
+    //   onUploadProgress: progressEvent => {
+    //     console.log(progressEvent.loaded / progressEvent.total)
+    //   }
+    // })
   }
 
   chooseFile = () => {
