@@ -1,15 +1,17 @@
 import {
   LOGIN_REQUEST_SUCCESS,
 } from './actions';
-import { defaultReducers } from '../defaultReducers';
+import { initialState } from '../initialState';
 
-const DEFAULT = defaultReducers.auth;
-
-export default function auth(state = DEFAULT, action = {}) {
+export default function auth(state = initialState.auth, action = {}) {
   const { type, payload } = action;
 
   switch (type) {
     case LOGIN_REQUEST_SUCCESS: {
+      return {
+        ...state,
+        user: payload.user          
+      }
       break;
     }
     default: {

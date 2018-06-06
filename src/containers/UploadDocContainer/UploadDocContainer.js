@@ -1,18 +1,11 @@
 import React, { PureComponent } from 'react'; 
-import Webcam from 'react-webcam';
-import { withRouter } from 'react-router-dom';
-import { Icon, Row, Col, Button, Input, Layout } from 'antd';
-import { connectSettings } from 'core';
+import { Icon, Row, Col, Button, Layout } from 'antd';
 import logo from 'assets/img/logo.png';
 import UploadDocument from '../../components/UploadDocument/UploadDocument';
 
-const { Content, Header, Footer } = Layout;
+const { Content, Header} = Layout;
 
 class UploadDocContainer extends PureComponent {
-
-  constructor(props) {
-    super(props);
-  }
 
   showTakePhotoPage = () => {
     this.props.history.push('upload/take_photo');
@@ -35,7 +28,7 @@ class UploadDocContainer extends PureComponent {
             <Content className="main">
               <Row className="validation_logo_area">
                 <Col span={5} offset={5}>
-                  <img src={logo} className="logo"/>
+                  <img alt="true" src={logo} className="logo"/>
                 </Col>
                 <Col span={12} className="title_area">
                   <Row className="row_title"><Col><span  className="logo_title">NO REST</span></Col></Row>
@@ -46,7 +39,7 @@ class UploadDocContainer extends PureComponent {
                 <Col span={12} offset={6}>
                     <span className="validation_choose_title">&ensp;Upload&ensp;Document</span>
                 </Col>
-              </Row>  
+              </Row>
               <Row className="upload_area">
                 <Col offset={4} span={16}>
                   <UploadDocument />
@@ -76,4 +69,4 @@ const mapStateToProps = ({}) => ({
   
 });
 
-export default connectSettings(mapStateToProps, {})(UploadDocContainer);
+export default UploadDocContainer;

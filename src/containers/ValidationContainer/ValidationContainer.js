@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react'; 
-import { withRouter, BrowserRouter } from 'react-router-dom';
-import { Icon, Row, Col, Button, Input, Layout } from 'antd';
-import { connectSettings } from 'core';
+import { Icon, Row, Col, Button, Layout } from 'antd';
 import DocumentSelect from '../../components/DocumentSelect/DocumentSelect';
 import DropdownSelect from '../../components/DropdownSelect/DropdownSelect';
 import logo from 'assets/img/logo.png';
 
-const { Content, Header, Footer } = Layout;
+const { Content, Header } = Layout;
 
 class ValidationContainer extends PureComponent {
 
@@ -22,7 +20,7 @@ class ValidationContainer extends PureComponent {
   }
 
   back = () => {
-    this.props.history.push('/signin');
+    this.props.history.push('/signin/adfasdfasdf');
   }
 
   render () {
@@ -38,7 +36,7 @@ class ValidationContainer extends PureComponent {
             <Content className="main">
               <Row className="validation_logo_area">
                 <Col span={5} offset={5}>
-                  <img src={logo} className="logo"/>
+                  <img alt="true" src={logo} className="logo"/>
                 </Col>
                 <Col span={12} className="title_area">
                   <Row className="row_title"><Col><span  className="logo_title">NO REST</span></Col></Row>
@@ -84,4 +82,4 @@ const mapStateToProps = ({}) => ({
   
 });
 
-export default connectSettings(mapStateToProps, {})(ValidationContainer);
+export default ValidationContainer;

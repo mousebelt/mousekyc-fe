@@ -1,11 +1,6 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import qs from 'query-string';
-import { isEqual } from 'lodash';
-
-import { connectSettings, settingsActionCreators } from 'core';
 
 import SignInContainer from 'containers/SignInContainer/SignInContainer';
 import ValidationContainer from 'containers/ValidationContainer/ValidationContainer';
@@ -23,7 +18,7 @@ class RoutesContainer extends PureComponent {
   render () {
     return (
       <Switch>
-        <Route exact path="/signin" component={SignInContainer}/>
+        <Route exact path="/signin/:token" component={SignInContainer}/>
         <Route exact path="/validation" component={ValidationContainer}/>
         <Route exact path="/upload" component={UploadDocContainer}/>
         <Route exact path="/upload/take_photo" component={TakePhotoContainer}/>
@@ -33,17 +28,8 @@ class RoutesContainer extends PureComponent {
   }
 }
 
-RoutesContainer.propTypes = {
-}
-
 const mapDisptachToProps = (dispatch) => {
-  const {
-    setSettings
-  } = settingsActionCreators;
-
-  return bindActionCreators({
-    setSettings
-  }, dispatch);
+  
 }
 
-export default connectSettings(undefined, mapDisptachToProps)(RoutesContainer);
+export default RoutesContainer;
