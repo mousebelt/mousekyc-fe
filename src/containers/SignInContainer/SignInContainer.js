@@ -28,11 +28,13 @@ class SignInContainer extends PureComponent {
 
   componentWillMount() {
     let token = this.props.match.params.token;
-    promisify(this.props.login, { token: token})
-      .then((user) => {
-        this.setState(...this.state, {user: user});
-      })
-      .catch(e => console.log(e));
+    if (token) {
+      promisify(this.props.login, { token: token})
+        .then((user) => {
+          this.setState(...this.state, {user: user});
+        })
+        .catch(e => console.log(e));
+    }
   }
 
   handleEmail = () => {
@@ -45,28 +47,33 @@ class SignInContainer extends PureComponent {
 
   render () {
     var continueButton, emailInput, msg = '';
-    emailInput = <Input placeholder="Email Address" onClick={this.handleClick} />
-    switch(this.state.user.approvalStatus) {
-      case 'NO_SUBMISSION_YET':
-        continueButton = <Button className="continue_btn" onClick={this.showValidationPage}>CONTINUE</Button>
-      break;
-      case 'PENDING':
-        continueButton = <Button disabled="true" className="continue_btn">PENDING</Button>
-      break;
-      case 'APPROVED':
-        continueButton = <Button className="continue_btn kyc_complete_btn">KYC COMPLETE</Button>
-        emailInput = <Input className="kyc_complete_input" value={this.state.user.email ? this.state.user.email : '' } readOnly={this.state.user.email ? true: false} placeholder="Email Address" onClick={this.handleEmail} suffix={<Icon style={{ fontSize: 16, color: '#3cb878' }} type="check-circle" /> }/> 
-        msg = <span className="kyc_complete_msg">User has had a succssful review</span>
-      break;
-      case 'ACTION_REQUESTED':
-        continueButton = <Button className="continue_btn kyc_error" onClick={this.showValidationPage}>KYC ERROR</Button>
-        emailInput = <Input className="kyc_error_input" value={this.state.user.email ? this.state.user.email : '' } readOnly={this.state.user.email ? true: false} placeholder="Email Address" onClick={this.handleClick} suffix={<Icon style={{ fontSize: 16, color: '#e34132' }} type="question-circle" /> }/>
-        msg = <span className="kyc_error_msg">Insufficent information</span>
-      break;
-      case 'BLOCKED':
-        continueButton = <Button disabled="true" className="continue_btn">BLOCKED</Button>
-      break;
+    emailInput = <Input placeholder="Email Address" onClick={this.handleEmail} />
+    continueButton = <Button className="continue_btn" onClick={this.showValidationPage}>CONTINUE</Button>
+    if (this.state.user != '') {
+      emailInput = <Input value={this.state.user.email ? this.state.user.email : '' } placeholder="Email Address" onClick={this.handleEmail} />
+      switch(this.state.user.approvalStatus) {
+        case 'NO_SUBMISSION_YET':
+          continueButton = <Button className="continue_btn" onClick={this.showValidationPage}>CONTINUE</Button>
+        break;
+        case 'PENDING':
+          continueButton = <Button disabled="true" className="continue_btn">PENDING</Button>
+        break;
+        case 'APPROVED':
+          continueButton = <Button className="continue_btn kyc_complete_btn">KYC COMPLETE</Button>
+          emailInput = <Input className="kyc_complete_input" value={this.state.user.email ? this.state.user.email : '' } readOnly={this.state.user.email ? true: false} placeholder="Email Address" onClick={this.handleEmail} suffix={<Icon style={{ fontSize: 16, color: '#3cb878' }} type="check-circle" /> }/> 
+          msg = <span className="kyc_complete_msg">User has had a succssful review</span>
+        break;
+        case 'ACTION_REQUESTED':
+          continueButton = <Button className="continue_btn kyc_error" onClick={this.showValidationPage}>KYC ERROR</Button>
+          emailInput = <Input className="kyc_error_input" value={this.state.user.email ? this.state.user.email : '' } readOnly={this.state.user.email ? true: false} placeholder="Email Address" onClick={this.handleClick} suffix={<Icon style={{ fontSize: 16, color: '#e34132' }} type="question-circle" /> }/>
+          msg = <span className="kyc_error_msg">Insufficent information</span>
+        break;
+        case 'BLOCKED':
+          continueButton = <Button disabled="true" className="continue_btn">BLOCKED</Button>
+        break;
+      }
     }
+
     return (
       <div className="block">
         <Layout>
@@ -78,7 +85,7 @@ class SignInContainer extends PureComponent {
                   <img alt="true" src={logo} className="logo"/>
                 </Col>
                 <Col span={12} className="title_area">
-                  <Row className="authActionCreatorsrow_titlbindActionCreatorse"><Col><span  className="logo_title">NO REST</span></Col></Row>
+                  <Row className="row_title"><Col><span  className="logo_title">NO REST</span></Col></Row>
                   <Row className="row_title"><Col><span className="logo_title">LABS</span></Col></Row>
                 </Col>
               </Row>
