@@ -5,7 +5,7 @@ import UploadDocument from '../../components/UploadDocument/UploadDocument';
 
 const { Content, Header} = Layout;
 
-class UploadDocContainer extends PureComponent {
+class UploadSelfieContainer extends PureComponent {
 
   showTakePhotoPage = () => {
     this.props.history.push('upload/take_photo');
@@ -37,7 +37,7 @@ class UploadDocContainer extends PureComponent {
               </Row>
               <Row  className="validation_title_area">
                 <Col span={12} offset={6}>
-                    <span className="validation_choose_title">&ensp;Upload&ensp;Document</span>
+                    <span className="validation_choose_title">&ensp;Upload&ensp;Selfie</span>
                 </Col>
               </Row>
               <Row className="upload_area">
@@ -69,4 +69,4 @@ const mapStateToProps = ({}) => ({
   
 });
 
-export default UploadDocContainer;
+export default UploadSelfieContainer;

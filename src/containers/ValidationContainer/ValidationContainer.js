@@ -20,7 +20,7 @@ class ValidationContainer extends PureComponent {
   }
 
   back = () => {
-    this.props.history.push('/signin/adfasdfasdf');
+    this.props.history.goBack();
   }
 
   render () {

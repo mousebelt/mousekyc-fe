@@ -28,7 +28,7 @@ class TakePhotoContainer extends PureComponent {
   }
 
   back = () => {
-    this.props.history.push('/upload');
+    this.props.history.goBack();
   }
 
   render () {
