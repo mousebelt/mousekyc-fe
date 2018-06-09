@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react'; 
+import { bindActionCreators } from 'redux';
 import { Icon, Row, Col, Button, Layout } from 'antd';
+import { connectValidation, validationActionCreators } from 'core';
+import { promisify } from '../../utilities';
 import DocumentSelect from '../../components/DocumentSelect/DocumentSelect';
 import DropdownSelect from '../../components/DropdownSelect/DropdownSelect';
 import logo from 'assets/img/logo.png';
@@ -11,8 +14,16 @@ class ValidationContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isFocus: false
+      countries: []
     }
+  }
+
+  componentWillMount() {
+    promisify(this.props.getCountries, { })
+      .then((countries) => {
+        this.setState(...this.state, {countries: countries});
+      })
+      .catch(e => console.log(e));
   }
 
   showUploadDocPage = () => {
@@ -63,7 +74,7 @@ class ValidationContainer extends PureComponent {
               </Row>
               <Row className="document_region_area">
                 <Col offset={4} span={16}>
-                  <DropdownSelect  className="document_region_select" placeholder="Region"/>
+                  <DropdownSelect options={this.state.countries} onSelectCountry={(country) => console.log('country:', country)} className="document_region_select" placeholder="Region"/>
                 </Col>
               </Row>
               <Row>
@@ -78,8 +89,15 @@ class ValidationContainer extends PureComponent {
     );
   }  
 }
-const mapStateToProps = ({}) => ({
-  
-});
 
-export default ValidationContainer;
+const mapDisptachToProps = (dispatch) => {
+  const {
+    getCountries
+  } = validationActionCreators;
+
+  return bindActionCreators({
+    getCountries
+  }, dispatch);
+}
+
+export default connectValidation(undefined, mapDisptachToProps)(ValidationContainer);
