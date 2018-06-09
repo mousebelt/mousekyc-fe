@@ -2,11 +2,13 @@
 
 import { fork, all } from 'redux-saga/effects';
 import {
-  authSaga
+  authSaga,
+  validationSaga
 } from '../modules';
 
 export default function* rootSaga() {
   yield all([
-    fork(authSaga)
+    fork(authSaga),
+    fork(validationSaga)
   ]);
 }
