@@ -1,8 +1,7 @@
 // @flow
 
-import { set, isEmpty, includes } from 'lodash';
+import { set, isEmpty} from 'lodash';
 import { apiEndpoint } from './constants';
-import { loadToken, saveToken } from "./localStorage";
 
 export async function KycService({ api, third_party, method, params }) {
   const headers = {};

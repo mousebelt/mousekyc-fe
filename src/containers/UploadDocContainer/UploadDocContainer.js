@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react'; 
+import { bindActionCreators } from 'redux';
+import { compose } from 'recompose';
 import { Icon, Row, Col, Button, Layout } from 'antd';
+import { connectAuth, authActionCreators } from 'core';
+import { promisify } from '../../utilities';
 import logo from 'assets/img/logo.png';
 import UploadDocument from '../../components/UploadDocument/UploadDocument';
 
@@ -7,12 +11,39 @@ const { Content, Header} = Layout;
 
 class UploadDocContainer extends PureComponent {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      imgSrc: ''
+    }
+  }
+
   showTakePhotoPage = () => {
-    this.props.history.push('upload/take_photo');
+    this.props.history.push('upload/take_photo', {uploadType: 'document'});
+  }
+
+  onChooseImage = (imgSrc) => {
+    this.setState(...this.state, {imgSrc: imgSrc});
+  }
+
+  uploadDocument = () => {
+    if (this.state.imgSrc !== '' && this.props.user && this.props.docType) {
+      promisify(this.props.updateIdentity, { 
+        email: this.props.user.email,
+        token: this.props.user.token,
+        documentType: this.props.docType,
+        identityDocument: this.state.imgSrc
+      })
+        .then((userInfo) => {
+          console.log(userInfo);
+          this.props.history.push('upload/match');
+        })
+        .catch(e => console.log(e));
+    }
   }
 
   back = () => {
-    this.props.history.goBack();
+    this.props.history.push('validation');
   }
 
   render () {
@@ -42,7 +73,7 @@ class UploadDocContainer extends PureComponent {
               </Row>
               <Row className="upload_area">
                 <Col offset={4} span={16}>
-                  <UploadDocument />
+                  <UploadDocument onChooseImage={(imgSrc) => this.onChooseImage(imgSrc)} />
                 </Col>
               </Row>
               <Row className="upload_btn_area">
@@ -55,7 +86,7 @@ class UploadDocContainer extends PureComponent {
               </Row>
               <Row>
                 <Col offset={4} span={16}>
-                  <Button className="upload_next">NEXT</Button>
+                  <Button className={this.state.imgSrc === '' ? "continue_btn" : "continue_enable_btn"} disabled={this.state.imgSrc === '' ? true : false} onClick={this.uploadDocument}>NEXT</Button>
                 </Col>
               </Row>
             </Content>
@@ -65,8 +96,22 @@ class UploadDocContainer extends PureComponent {
     );
   }  
 }
-const mapStateToProps = ({}) => ({
-  
+
+const mapStateToProps = ({auth}) => ({
+  user: auth.user,
+  docType: auth.docType
 });
 
-export default UploadDocContainer;
+const mapDisptachToProps = (dispatch) => {
+  const {
+    updateIdentity
+  } = authActionCreators
+
+  return bindActionCreators({
+    updateIdentity
+  }, dispatch);
+}
+
+export default compose(
+  connectAuth(mapStateToProps, mapDisptachToProps),
+)(UploadDocContainer);

@@ -5,25 +5,23 @@ class UploadDocument extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      selectedFile: ''
+      selectedFile: '',
+      imageBase64: ''
     }
   }
 
   fileChangedHandler = (event) => {
-    console.log(event.target.files[0]);
     this.setState(...this.state, {selectedFile: event.target.files[0]})
-  }
-
-  uploadHandler = () => {
-    const formData = new FormData()
-    formData.append('myFile', this.state.selectedFile, this.state.selectedFile.name)
-    // axios.post('my-domain.com/file-upload', formData)
-
-    // axios.post('my-domain.com/file-upload', formData, {
-    //   onUploadProgress: progressEvent => {
-    //     console.log(progressEvent.loaded / progressEvent.total)
-    //   }
-    // })
+    var _ = this;
+    var reader = new FileReader();
+    var file = event.target.files[0];
+    reader.onload = function(upload) {
+      _.setState(..._.state, {imageBase64: upload.target.result});
+    };
+    reader.readAsDataURL(file);
+    setTimeout(function() {
+      _.props.onChooseImage(_.state.imageBase64);
+    }, 1000);
   }
 
   chooseFile = () => {

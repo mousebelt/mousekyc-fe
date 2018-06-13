@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'; 
 import { bindActionCreators } from 'redux';
+import { compose } from 'recompose';
 import { Icon, Row, Col, Button, Layout } from 'antd';
-import { connectValidation, validationActionCreators } from 'core';
+import { connectAuth, connectValidation, authActionCreators, validationActionCreators } from 'core';
 import { promisify } from '../../utilities';
 import DocumentSelect from '../../components/DocumentSelect/DocumentSelect';
 import DropdownSelect from '../../components/DropdownSelect/DropdownSelect';
@@ -14,11 +15,13 @@ class ValidationContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      countries: []
+      countries: [],
+      docType: 'PASSPORT',
+      country: ''
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     promisify(this.props.getCountries, { })
       .then((countries) => {
         this.setState(...this.state, {countries: countries});
@@ -27,11 +30,31 @@ class ValidationContainer extends PureComponent {
   }
 
   showUploadDocPage = () => {
-    this.props.history.push('/upload');
+    if (this.props.user) {
+      promisify(this.props.updateUser, {
+        email: this.props.user.email,
+        token: this.props.user.token,
+        residenceCountry: this.state.country,
+        docType: this.state.docType
+      })
+        .then((profile) => {
+          this.props.history.push('/upload'); 
+        })
+        .catch(e => console.log(e));
+    }
+  }
+  
+  onSelectDoc = (docType) => {
+    this.setState(...this.state, {docType: docType});
   }
 
+  onSelectCountry = (country) => {
+    this.setState(...this.state, {country: country});
+  }
+  
   back = () => {
-    this.props.history.goBack();
+    if (this.props.user)
+      this.props.history.push(`/signin/${this.props.user.token}`);
   }
 
   render () {
@@ -61,7 +84,7 @@ class ValidationContainer extends PureComponent {
               </Row>  
               <Row className="document_area">
                 <Col offset={4} span={16}>
-                    <DocumentSelect onSelectDoc={(docType) => console.log('docType:', docType)} />
+                    <DocumentSelect onSelectDoc={(docType) => this.onSelectDoc(docType)} />
                 </Col>
               </Row>
               <Row className="document_type_area">
@@ -74,12 +97,12 @@ class ValidationContainer extends PureComponent {
               </Row>
               <Row className="document_region_area">
                 <Col offset={4} span={16}>
-                  <DropdownSelect options={this.state.countries} onSelectCountry={(country) => console.log('country:', country)} className="document_region_select" placeholder="Region"/>
+                  <DropdownSelect options={this.state.countries} onSelectCountry={(country) => this.onSelectCountry(country)} className="document_region_select" placeholder="Region"/>
                 </Col>
               </Row>
               <Row>
                 <Col offset={4} span={16}>
-                  <Button className="continue_btn" onClick={this.showUploadDocPage}>NEXT</Button>
+                  <Button className={this.state.country === '' ? "continue_btn" : "continue_enable_btn"} disabled={this.state.country === '' ? true : false} onClick={this.showUploadDocPage}>NEXT</Button>
                 </Col>
               </Row>
             </Content>
@@ -90,14 +113,26 @@ class ValidationContainer extends PureComponent {
   }  
 }
 
+const mapStateToProps = ({auth}) => ({
+  user: auth.user
+});
+
 const mapDisptachToProps = (dispatch) => {
   const {
     getCountries
   } = validationActionCreators;
 
+  const {
+    updateUser
+  } = authActionCreators
+
   return bindActionCreators({
-    getCountries
+    getCountries,
+    updateUser
   }, dispatch);
 }
 
-export default connectValidation(undefined, mapDisptachToProps)(ValidationContainer);
+export default compose(
+  connectValidation(undefined, mapDisptachToProps),
+  connectAuth(mapStateToProps, mapDisptachToProps),
+)(ValidationContainer);

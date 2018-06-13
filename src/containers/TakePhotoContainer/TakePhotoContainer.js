@@ -1,6 +1,10 @@
 import React, { PureComponent } from 'react'; 
 import Webcam from 'react-webcam';
+import { bindActionCreators } from 'redux';
+import { compose } from 'recompose';
 import { Icon, Row, Col, Button, Layout } from 'antd';
+import { connectAuth, authActionCreators } from 'core';
+import { promisify } from '../../utilities';
 import logo from 'assets/img/logo.png';
 
 const { Content, Header } = Layout;
@@ -10,7 +14,45 @@ class TakePhotoContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      imageSrc: ''
+      imageSrc: '',
+      uploadType: ''
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.location.state) {
+      let uploadType = this.props.location.state.uploadType;
+      this.setState(...this.state, {uploadType: uploadType});
+    }
+  }
+
+  uploadDocument = () => {
+    if (this.state.uploadType === 'document') {
+      if (this.state.imageSrc !== '' && this.props.user && this.props.docType) {
+        promisify(this.props.updateIdentity, { 
+          email: this.props.user.email,
+          token: this.props.user.token,
+          documentType: this.props.docType,
+          identityDocument: this.state.imageSrc
+        })
+          .then((userInfo) => {
+            console.log(userInfo);
+            this.props.history.push('match');
+          })
+          .catch(e => console.log(e));
+      }
+    } else if (this.state.uploadType === 'selfie') {
+      if (this.state.imageSrc !== '' && this.props.user) {
+        promisify(this.props.updateSelfie, { 
+          email: this.props.user.email,
+          token: this.props.user.token,
+          selfie: this.state.imageSrc
+        })
+          .then((userInfo) => {
+            console.log(userInfo);
+          })
+          .catch(e => console.log(e));
+      }
     }
   }
 
@@ -26,7 +68,7 @@ class TakePhotoContainer extends PureComponent {
   RetakePicture = () => {
     this.setState(...this.state, {imageSrc: null});
   }
-
+  
   back = () => {
     this.props.history.goBack();
   }
@@ -83,7 +125,7 @@ class TakePhotoContainer extends PureComponent {
               </Row>
               <Row>
                 <Col offset={4} span={16}>
-                  <Button className="upload_next">NEXT</Button>
+                  <Button className={this.state.imageSrc === '' ? "continue_btn" : "continue_enable_btn"} disabled={this.state.imageSrc === '' ? true : false} onClick={this.uploadDocument}>NEXT</Button>
                 </Col>
               </Row>
             </Content>
@@ -93,8 +135,24 @@ class TakePhotoContainer extends PureComponent {
     );
   }  
 }
-const mapStateToProps = ({}) => ({
-  
+
+const mapStateToProps = ({auth}) => ({
+  user: auth.user,
+  docType: auth.docType
 });
 
-export default TakePhotoContainer;
+const mapDisptachToProps = (dispatch) => {
+  const {
+    updateIdentity,
+    updateSelfie
+  } = authActionCreators
+
+  return bindActionCreators({
+    updateIdentity,
+    updateSelfie
+  }, dispatch);
+}
+
+export default compose(
+  connectAuth(mapStateToProps, mapDisptachToProps),
+)(TakePhotoContainer);
