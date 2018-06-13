@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Icon, Row, Col, Button, Input, Layout } from 'antd';
 import { connectAuth, authActionCreators } from 'core';
 import { promisify } from '../../utilities';
+import { validateEmail } from '../../services/common';
 import logo from 'assets/img/logo.png';
 
 const { Content, Header } = Layout;
@@ -22,11 +23,13 @@ class SignInContainer extends PureComponent {
     super(props);
     this.state = {
       isFocus: false,
-      user: ''
+      user: '',
+      email: '',
+      isEmailValidate: true
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let token = this.props.match.params.token;
     if (token) {
       promisify(this.props.login, { token: token})
@@ -41,16 +44,35 @@ class SignInContainer extends PureComponent {
     this.setState(...this.state, {isFocus: true});
   }
 
+  updateEmailValue = (evt) => {
+    this.setState({
+      email: evt.target.value
+    });
+  }
+
   showValidationPage = () => {
-    this.props.history.push('/validation');
+    if (this.state.email.length !== 0 && validateEmail(this.state.email)) {
+      this.setState(...this.state, {isEmailValidate: true});
+      promisify(this.props.genToken, { email: this.state.email})
+        .then((user) => {
+          this.props.history.push('/validation');
+        })
+        .catch(e => console.log(e));
+    } else {
+      this.setState(...this.state, {isEmailValidate: false});
+    }
+
+    if (this.state.user.email) {
+      this.props.history.push('/validation');
+    }
   }
 
   render () {
     var continueButton, emailInput, msg = '';
-    emailInput = <Input placeholder="Email Address" onClick={this.handleEmail} />
+    emailInput = <Input value={this.state.email} placeholder="Email Address" onClick={this.handleEmail} onChange={this.updateEmailValue} />
     continueButton = <Button className="continue_btn" onClick={this.showValidationPage}>CONTINUE</Button>
-    if (this.state.user != '') {
-      emailInput = <Input value={this.state.user.email ? this.state.user.email : '' } placeholder="Email Address" onClick={this.handleEmail} />
+    if (this.state.user !== '') {
+      emailInput = <Input value={this.state.user.email ? this.state.user.email : '' } readOnly="true" placeholder="Email Address" onClick={this.handleEmail} />
       switch(this.state.user.approvalStatus) {
         case 'NO_SUBMISSION_YET':
           continueButton = <Button className="continue_btn" onClick={this.showValidationPage}>CONTINUE</Button>
@@ -60,12 +82,12 @@ class SignInContainer extends PureComponent {
         break;
         case 'APPROVED':
           continueButton = <Button className="continue_btn kyc_complete_btn">KYC COMPLETE</Button>
-          emailInput = <Input className="kyc_complete_input" value={this.state.user.email ? this.state.user.email : '' } readOnly={this.state.user.email ? true: false} placeholder="Email Address" onClick={this.handleEmail} suffix={<Icon style={{ fontSize: 16, color: '#3cb878' }} type="check-circle" /> }/> 
+          emailInput = <Input className="kyc_complete_input" value={this.state.user.email ? this.state.user.email : '' } placeholder="Email Address" onClick={this.handleEmail} suffix={<Icon style={{ fontSize: 16, color: '#3cb878' }} type="check-circle" /> }/> 
           msg = <span className="kyc_complete_msg">User has had a succssful review</span>
         break;
         case 'ACTION_REQUESTED':
           continueButton = <Button className="continue_btn kyc_error" onClick={this.showValidationPage}>KYC ERROR</Button>
-          emailInput = <Input className="kyc_error_input" value={this.state.user.email ? this.state.user.email : '' } readOnly={this.state.user.email ? true: false} placeholder="Email Address" onClick={this.handleClick} suffix={<Icon style={{ fontSize: 16, color: '#e34132' }} type="question-circle" /> }/>
+          emailInput = <Input className="kyc_error_input" value={this.state.user.email ? this.state.user.email : '' } placeholder="Email Address" onClick={this.handleClick} suffix={<Icon style={{ fontSize: 16, color: '#e34132' }} type="question-circle" /> }/>
           msg = <span className="kyc_error_msg">Insufficent information</span>
         break;
         case 'BLOCKED':
@@ -92,7 +114,7 @@ class SignInContainer extends PureComponent {
               <Row className="email_area">
                 <Col offset={4} span={16}>
                   { this.state.isFocus ?
-                  <span className="label_name">Email Address</span>
+                  <span className="label_name">{ this.state.isEmailValidate ? 'Email Address' : 'Invalid Email'}</span>
                   : null
                   }
                   { emailInput }
@@ -115,14 +137,20 @@ class SignInContainer extends PureComponent {
     );
   }  
 }
+
+const mapStateToProps = ({auth}) => ({
+  user: auth.user
+});
 const mapDisptachToProps = (dispatch) => {
   const {
-    login
+    login,
+    genToken
   } = authActionCreators;
 
   return bindActionCreators({
-    login
+    login,
+    genToken
   }, dispatch);
 }
 
-export default connectAuth(undefined, mapDisptachToProps)(SignInContainer);
+export default connectAuth(mapStateToProps, mapDisptachToProps)(SignInContainer);

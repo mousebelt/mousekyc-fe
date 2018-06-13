@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'; 
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { compose } from 'recompose';
 import { Icon, Row, Col, Button, Input, Layout, DatePicker } from 'antd';
 import locale from 'antd/lib/date-picker/locale/en_US';
 import { connectAuth, authActionCreators } from 'core';
@@ -12,10 +13,71 @@ const { Content, Header } = Layout;
 class MatchContainer extends PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      first_name: '',
+      last_name: '',
+      birthday:'',
+      document_expire:'',
+      nationality: '',
+      document_id:'',
+      isFilled: false
+    }
+  }
+
+  onChangeData = (type, evt) => {
+    switch(type) {
+      case 'firstname':
+        this.setState(...this.state, {first_name: evt.target.value});
+        break;
+      case 'lastname':
+        this.setState(...this.state, {last_name: evt.target.value});
+        break;
+      case 'nationality':
+        this.setState(...this.state, {nationality: evt.target.value});
+        break;
+      case 'documentid':
+        this.setState(...this.state, {document_id: evt.target.value});
+        break;
+    }
+  }
+
+  setBirthday = (date, dateString) => {
+    this.setState(...this.state, {birthday: dateString});
+  }
+  
+  setDocExpireDate = (date, dateString) => {
+    this.setState(...this.state, {document_expire: dateString});
+  }
+
+  showUploadPage = () => {
+    this.props.history.push('/upload');
+  }
+
+  checkInputStatus = () => {
+    if(this.state.first_name !== '' && this.state.last_name !== '' && this.state.nationality !== '' && this.state.document_id !== ''
+      && this.state.birthday !== '' && this.state.document_expire !== '') {
+      this.setState(...this.state, {isFilled: true});
+    } else {
+      this.setState(...this.state, {isFilled: false});
+    }
   }
 
   showSelfiePage = () => {
-    this.props.history.push('/upload/selfie');
+    promisify(this.props.updateUser, {
+      email: this.props.user.email,
+      token: this.props.user.token,
+      firstname: this.state.first_name,
+      lastname: this.state.last_name,
+      dob: this.state.birthday,
+      documentExpireDate: this.state.document_expire,
+      nationalityCountry: this.state.nationality,
+      documentId: this.state.document_id
+    })
+      .then((user) => {
+        console.log(user);
+        this.props.history.push('/upload/selfie');
+      })
+      .catch(e => console.log(e));
   }
 
   render () {
@@ -43,40 +105,40 @@ class MatchContainer extends PureComponent {
                 <Row className="matched_row">
                     <Col offset={3} span={7}>
                         <span className="label_name">FIRST NAME</span>
-                        <Input placeholder="First Name" />
+                        <Input placeholder="First Name" onChange={(evt) => this.onChangeData('firstname', evt)} />
                     </Col>
                     <Col offset={3} span={7}>
                         <span className="label_name">LAST NAME</span>
-                        <Input placeholder="Last Name" />
+                        <Input placeholder="Last Name" onChange={(evt) => this.onChangeData('lastname', evt)} />
                     </Col>
                 </Row>
                 <Row className="matched_row">
                     <Col offset={3} span={7}>
                         <span className="label_name">BIRTH DATE</span>
-                        <DatePicker placeholder="Birth Date" locale={locale} />
+                        <DatePicker placeholder="Birth Date" locale={locale} onChange={(date, dateString) => this.setBirthday(date, dateString)}/>
                     </Col>
                     <Col offset={3} span={7}>
                         <span className="label_name">DOCUMENT EXPIRATION</span>
-                        <DatePicker placeholder="Document Expiration" locale={locale} />
+                        <DatePicker placeholder="Document Expiration" locale={locale} onChange={(date, dateString) => this.setDocExpireDate(date, dateString)}/>
                     </Col>
                 </Row>
                 <Row className="matched_row">
                     <Col offset={3} span={7}>
                         <span className="label_name">NATIONALITY</span>
-                        <Input placeholder="Nationality" />
+                        <Input placeholder="Nationality" onChange={(evt) => this.onChangeData('nationality', evt)} />
                     </Col>
                     <Col offset={3} span={7}>
                         <span className="label_name">DOCUMENT ID</span>
-                        <Input placeholder="Document Id" />
+                        <Input placeholder="Document Id" onChange={(evt) => this.onChangeData('documentid', evt)} />
                     </Col>
                 </Row>
               </Row>
               <Row className="upload_btn_area">
                 <Col className="take_area" offset={2} span={6}>
-                  <Button className="take_btn">Upload<Icon style={{ fontSize: 16, color: '#ffffff'}} type="upload" /></Button>
+                  <Button className="take_btn" onClick={this.showUploadPage}>Upload<Icon style={{ fontSize: 16, color: '#ffffff'}} type="upload" /></Button>
                 </Col>
                 <Col className="preview_area" offset={8} span={6}>
-                  <Button className="preview_btn" onClick={this.showSelfiePage}>Processed<Icon style={{ fontSize: 16, color: '#ffffff'}} type="eye" /></Button>
+                  <Button className="preview_btn" disabled={!this.state.isFilled  ? true : false} onMouseEnter={this.checkInputStatus} onClick={this.showSelfiePage}>Processed<Icon style={{ fontSize: 16, color: '#ffffff'}} type="eye" /></Button>
                 </Col>
               </Row>
             </Content>
@@ -86,14 +148,21 @@ class MatchContainer extends PureComponent {
     );
   }  
 }
+
+const mapStateToProps = ({auth}) => ({
+  user: auth.user
+});
+
 const mapDisptachToProps = (dispatch) => {
   const {
-    login
-  } = authActionCreators;
+    updateUser
+  } = authActionCreators
 
   return bindActionCreators({
-    login
+    updateUser
   }, dispatch);
 }
 
-export default connectAuth(undefined, mapDisptachToProps)(MatchContainer);
+export default compose(
+  connectAuth(mapStateToProps, mapDisptachToProps),
+)(MatchContainer);

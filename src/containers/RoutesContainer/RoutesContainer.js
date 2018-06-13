@@ -33,8 +33,4 @@ class RoutesContainer extends PureComponent {
   }
 }
 
-const mapDisptachToProps = (dispatch) => {
-  
-}
-
 export default RoutesContainer;
