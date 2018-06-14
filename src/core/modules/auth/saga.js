@@ -19,6 +19,7 @@ import { KycService } from '../../../services';
 
 export function* asyncLoginRequest({ payload, resolve, reject }) {
   const { token } = payload;
+  console.log(payload);
   try {
     const response = yield call(KycService,
       {
@@ -26,6 +27,7 @@ export function* asyncLoginRequest({ payload, resolve, reject }) {
         method: 'GET',
         params: {}
       });
+      console.log(response);
     // @TODO: Open next lines after login api is completed
     if (response.status === 200) {
       // console.log('login response:', response);
@@ -60,14 +62,14 @@ export function* asyncGenTokenRequest({ payload, resolve, reject }) {
 }
 
 export function* asyncUserUpdateRequest({ payload, resolve, reject }) {
-  const { email, token, residenceCountry, docType, firstname, lastname,dob,documentExpireDate,nationalityCountry,documentId } = payload;
+  const { token, residenceCountry, docType, firstname, lastname,dob,documentExpireDate,nationalityCountry,documentId } = payload;
+  console.log(payload);
   try {
     const response = yield call(KycService,
       {
         api: `/user/update`,
         method: 'POST',
         params: {
-          email: email, 
           token: token,
           residenceCountry: residenceCountry,
           firstname: firstname,
@@ -78,6 +80,7 @@ export function* asyncUserUpdateRequest({ payload, resolve, reject }) {
           documentId: documentId
         }
       });
+      console.log(response)
     if (response.status === 200) {
       yield put(authActionCreators.updateUserSuccess({ profile: response.data, docType: docType}));
       resolve(response.data);
@@ -90,21 +93,18 @@ export function* asyncUserUpdateRequest({ payload, resolve, reject }) {
 }
 
 export function* asyncIdentityUpdateRequest({ payload, resolve, reject }) {
-  const { email, token, documentType, identityDocument } = payload;
-  console.log('payload', payload);
+  const { token, documentType, identityDocument } = payload;
   try {
     const response = yield call(KycService,
       {
         api: `/user/update/identity`,
         method: 'POST',
         params: {
-          email: email, 
           token: token,
           documentType: documentType,
           identityDocument: identityDocument
         }
       });
-      console.log(response);    
     if (response.status === 200) {
       yield put(authActionCreators.updateIdentitySuccess({ profile: response.data}));
       resolve(response.data);
@@ -117,14 +117,13 @@ export function* asyncIdentityUpdateRequest({ payload, resolve, reject }) {
 }
 
 export function* asyncSelfieUpdateRequest({ payload, resolve, reject }) {
-  const { email, token, selfie } = payload;
+  const { token, selfie } = payload;
   try {
     const response = yield call(KycService,
       {
         api: `/user/update/selfie`,
         method: 'POST',
         params: {
-          email: email, 
           token: token,
           selfie: selfie
         }

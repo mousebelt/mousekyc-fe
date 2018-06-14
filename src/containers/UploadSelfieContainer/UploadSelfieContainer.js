@@ -29,7 +29,6 @@ class UploadSelfieContainer extends PureComponent {
   uploadDocument = () => {
     if (this.state.imgSrc !== '' && this.props.user) {
       promisify(this.props.updateSelfie, { 
-        email: this.props.user.email,
         token: this.props.user.token,
         selfie: this.state.imgSrc
       })

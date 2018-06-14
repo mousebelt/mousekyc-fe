@@ -32,7 +32,6 @@ class ValidationContainer extends PureComponent {
   showUploadDocPage = () => {
     if (this.props.user) {
       promisify(this.props.updateUser, {
-        email: this.props.user.email,
         token: this.props.user.token,
         residenceCountry: this.state.country,
         docType: this.state.docType

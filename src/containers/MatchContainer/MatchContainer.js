@@ -64,7 +64,6 @@ class MatchContainer extends PureComponent {
 
   showSelfiePage = () => {
     promisify(this.props.updateUser, {
-      email: this.props.user.email,
       token: this.props.user.token,
       firstname: this.state.first_name,
       lastname: this.state.last_name,

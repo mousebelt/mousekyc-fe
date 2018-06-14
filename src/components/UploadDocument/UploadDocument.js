@@ -11,17 +11,19 @@ class UploadDocument extends PureComponent {
   }
 
   fileChangedHandler = (event) => {
-    this.setState(...this.state, {selectedFile: event.target.files[0]})
-    var _ = this;
-    var reader = new FileReader();
-    var file = event.target.files[0];
-    reader.onload = function(upload) {
-      _.setState(..._.state, {imageBase64: upload.target.result});
-    };
-    reader.readAsDataURL(file);
-    setTimeout(function() {
-      _.props.onChooseImage(_.state.imageBase64);
-    }, 1000);
+    if(event.target.files.length !== 0) {
+      this.setState(...this.state, {selectedFile: event.target.files[0]})
+      var _ = this;
+      var reader = new FileReader();
+      var file = event.target.files[0];
+      reader.onload = function(upload) {
+        _.setState(..._.state, {imageBase64: upload.target.result});
+      };
+      reader.readAsDataURL(file);
+      setTimeout(function() {
+        _.props.onChooseImage(_.state.imageBase64);
+      }, 1000);
+    }
   }
 
   chooseFile = () => {
@@ -33,11 +35,11 @@ class UploadDocument extends PureComponent {
       <div className="upload">
         <input type="file" ref={input => this.inputElement = input} onChange={this.fileChangedHandler}/>
         <img alt="true" src={uploadIcon} className="upload_icon" onClick={this.chooseFile}/>
-        <p className="upload_choose_title">
+        <div className="upload_choose_title">
           {
-            this.state.selectedFile ? <span>&ensp;&ensp;&ensp;&ensp;{this.state.selectedFile.name}</span>: 'Choose a document'
+            this.state.selectedFile ? <p className="upload_file_name">{this.state.selectedFile.name}</p>: 'Choose a document'
           }
-        </p>
+        </div>
       </div>
     );
   }

@@ -3,22 +3,30 @@
     height: 160px;
     border: 1px dashed @grey;
     text-align: center;
-    line-height: 150px;
     margin-bottom: 15px;
     cursor: pointer;
     
     &_icon {
         width: 40px;
         height: 40px;
+        margin-top: 50px;
     }
 
     &_choose_title {
-        position: absolute;
         height: 0px;
         top: 45px;
         left: 80px;
         color: gray;
         font-size: 12px;
+        margin: 0 auto;
+    }
+
+    &_file_name {
+        width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0 auto;
     }
 
     input {

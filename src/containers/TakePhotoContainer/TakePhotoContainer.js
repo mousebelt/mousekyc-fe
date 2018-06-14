@@ -30,7 +30,6 @@ class TakePhotoContainer extends PureComponent {
     if (this.state.uploadType === 'document') {
       if (this.state.imageSrc !== '' && this.props.user && this.props.docType) {
         promisify(this.props.updateIdentity, { 
-          email: this.props.user.email,
           token: this.props.user.token,
           documentType: this.props.docType,
           identityDocument: this.state.imageSrc
