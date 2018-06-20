@@ -33,7 +33,7 @@ class UploadSelfieContainer extends PureComponent {
         selfie: this.state.imgSrc
       })
         .then((userInfo) => {
-          console.log(userInfo);
+          this.props.history.push(`/signin/${this.props.user.token}`);
         })
         .catch(e => console.log(e));
     }
