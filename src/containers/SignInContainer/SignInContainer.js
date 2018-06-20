@@ -80,7 +80,7 @@ class SignInContainer extends PureComponent {
     emailInput = <Input value={this.state.email} placeholder="Email Address" onClick={this.handleEmail} onChange={this.updateEmailValue} />
     continueButton = <Button className="continue_btn" onClick={this.showValidationPage}>CONTINUE</Button>
     if (this.state.user !== '') {
-      emailInput = <Input value={this.state.user.email ? this.state.user.email : '' } readOnly="true" placeholder="Email Address" onClick={this.handleEmail} />
+      emailInput = <Input value={this.state.user.email ? this.state.user.email : '' } disabled={true} placeholder="Email Address" onClick={this.handleEmail} />
       switch(this.state.user.approvalStatus) {
         case 'NO_SUBMISSION_YET':
           continueButton = <Button className="continue_btn" onClick={this.showValidationPage}>CONTINUE</Button>
