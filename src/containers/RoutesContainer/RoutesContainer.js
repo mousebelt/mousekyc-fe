@@ -20,7 +20,6 @@ class RoutesContainer extends PureComponent {
   render () {
     return (
       <Switch>
-        <Route exact path="/signin/:token" component={SignInContainer}/>
         <Route exact path="/validation" component={ValidationContainer}/>
         <Route exact path="/upload" component={UploadDocContainer}/>
         <Route exact path="/upload/take_photo" component={TakePhotoContainer}/>

@@ -17,7 +17,7 @@ class App extends Component {
           <div className="App">
             <div className="content">
               <Switch>
-                {/* <Redirect exact from="/" to="/signin"/> */}
+                <Route exact path="/signin/:token" component={SignInContainer}/>
                 <Route path="/signin" exact component={SignInContainer}/>
                 <Route exact path="/404" component={PageNotFound}/>
                 <PrivateRoute path="/" component={RoutesContainer}/>

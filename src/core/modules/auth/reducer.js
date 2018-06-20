@@ -9,19 +9,37 @@ import { initialState } from '../initialState';
 
 export default function auth(state = initialState.auth, action = {}) {
   const { type, payload } = action;
-
+  
   switch (type) {
     case LOGIN_REQUEST_SUCCESS: {
-      return {
-        ...state,
-        user: payload.user
+      if (payload.user.approvalStatus === 'NO_SUBMISSION_YET' || payload.user.approvalStatus === 'ACTION_REQUESTED') {
+        return {
+          ...state,
+          user: payload.user
+        }
+      } else {
+        return {
+          ...state,
+          user: {},
+          profile: {},
+          docType: ''
+        }
       }
       break;
     }
     case GEN_TOKEN_REQUEST_SUCCESS: {
-      return {
-        ...state,
-        user: payload.user
+      if (payload.user.approvalStatus === 'NO_SUBMISSION_YET' || payload.user.approvalStatus === 'ACTION_REQUESTED') {
+        return {
+          ...state,
+          user: payload.user
+        }
+      } else {
+        return {
+          ...state,
+          user: {},
+          profile: {},
+          docType: ''
+        }
       }
       break;
     }
