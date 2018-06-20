@@ -34,7 +34,7 @@ class SignInContainer extends PureComponent {
     if (token) {
       promisify(this.props.login, { token: token})
         .then((user) => {
-          this.setState(...this.state, {user: user});
+          this.setState(...this.state, { user: user });
         })
         .catch(e => console.log(e));
     }
@@ -51,18 +51,26 @@ class SignInContainer extends PureComponent {
   }
 
   showValidationPage = () => {
-    if (this.state.email.length !== 0 && validateEmail(this.state.email)) {
+    if (this.state.email.length !== 0 && validateEmail(this.state.email) && !this.state.user.approvalStatus) {
       this.setState(...this.state, {isEmailValidate: true});
       promisify(this.props.genToken, { email: this.state.email})
         .then((user) => {
-          this.props.history.push('/validation');
+          if (user.token) {
+            promisify(this.props.login, { token: user.token })
+            .then((user) => {
+              this.setState(...this.state, { user: user });
+              if (user.approvalStatus === 'NO_SUBMISSION_YET')
+                this.props.history.push('/validation');          
+            })
+            .catch(e => console.log(e));
+          }
         })
         .catch(e => console.log(e));
     } else {
       this.setState(...this.state, {isEmailValidate: false});
     }
 
-    if (this.state.user.email) {
+    if (this.state.user.approvalStatus && this.state.user.approvalStatus === 'ACTION_REQUESTED') {
       this.props.history.push('/validation');
     }
   }
@@ -82,13 +90,13 @@ class SignInContainer extends PureComponent {
         break;
         case 'APPROVED':
           continueButton = <Button className="continue_btn kyc_complete_btn">KYC COMPLETE</Button>
-          emailInput = <Input className="kyc_complete_input" value={this.state.user.email ? this.state.user.email : '' } placeholder="Email Address" onClick={this.handleEmail} suffix={<Icon style={{ fontSize: 16, color: '#3cb878' }} type="check-circle" /> }/> 
+          emailInput = <Input className="kyc_complete_input" value={this.state.user.email ? this.state.user.email : '' } onChange={this.updateEmailValue} placeholder="Email Address" onClick={this.handleEmail} suffix={<Icon style={{ fontSize: 16, color: '#3cb878' }} type="check-circle" /> }/> 
           msg = <span className="kyc_complete_msg">User has had a succssful review</span>
         break;
         case 'ACTION_REQUESTED':
           continueButton = <Button className="continue_btn kyc_error" onClick={this.showValidationPage}>KYC ERROR</Button>
-          emailInput = <Input className="kyc_error_input" value={this.state.user.email ? this.state.user.email : '' } placeholder="Email Address" onClick={this.handleClick} suffix={<Icon style={{ fontSize: 16, color: '#e34132' }} type="question-circle" /> }/>
-          msg = <span className="kyc_error_msg">Insufficent information</span>
+          emailInput = <Input className="kyc_error_input" value={this.state.user.email ? this.state.user.email : '' } onChange={this.updateEmailValue} placeholder="Email Address" onClick={this.handleClick} suffix={<Icon style={{ fontSize: 16, color: '#e34132' }} type="question-circle" /> }/>
+          msg = <span className="kyc_error_msg">{this.state.user.approvalDescription ? this.state.user.approvalDescription : 'Insufficent information'}</span>
         break;
         case 'BLOCKED':
           continueButton = <Button disabled="true" className="continue_btn">BLOCKED</Button>
