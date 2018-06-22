@@ -23,7 +23,14 @@ First, You should install NodeJS on your local environment
 
 ### src
 *   assets
+    * img
+    * styles
 *   components
+    * DocumentSelect
+    * DropdownSelect
+    * List
+    * PrivateRoute
+    * UploadDocument
 *   containers
 *   core
 *   services
