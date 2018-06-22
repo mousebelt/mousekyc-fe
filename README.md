@@ -21,14 +21,14 @@ First, You should install NodeJS on your local environment
 
 # Project Structure
 
-## src
-### * assets
-### * components
-### * containers
-### * core
-### * services
-### * utilities
-### * App.test.js
-### * config.js
-### * index.js
-### * registerServiceWorker.js
+### src
+    #### assets
+    #### components
+    #### containers
+    #### core
+    #### services
+    #### utilities
+    #### App.test.js
+    #### config.js
+    #### index.js
+    #### registerServiceWorker.js
