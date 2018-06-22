@@ -1,8 +1,13 @@
-#### Installation
+# Project Description
+This project is to process KYC by User token
 
-Easy peezy.
+# How to run project
+It is easy to run project
+First, You should install NodeJS on your local environment
 
-```
-npm install
-npm start
-```
+1. Install dependencies
+```npm install```
+2. Run project
+```npm start```
+
+
