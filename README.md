@@ -32,10 +32,28 @@ First, You should install NodeJS on your local environment
     * PrivateRoute
     * UploadDocument
 *   containers
+    * MatchContainer
+    * RoutesContainer
+    * SigninContainer
+    * TakePhotoContainer
+    * UploadDocContainer
+    * UploadSelfieContainer
+    * ValidationContainer
 *   core
+    * modules
+    * store
+    * index.js
 *   services
+    * common.js
+    * constant.js
+    * index.js
+    * localStorage.js
+    * restService.js
 *   utilities
+    * index.js
+    * promisify.js
 *   App.test.js
 *   config.js
 *   index.js
 *   registerServiceWorker.js
+
