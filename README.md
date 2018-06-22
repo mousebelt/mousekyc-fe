@@ -66,3 +66,8 @@ Core includes redux structure(redux store, redux saga)
     REACT_APP_NODE_PTH=src/
     NODE_PATH=src/
 ```
+### API Endpoint
+you can change api endpoint in services/constants.js
+```
+    export const apiEndpoint = 'YOUR API ENDPOINT';
+```
