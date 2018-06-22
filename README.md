@@ -57,3 +57,12 @@ First, You should install NodeJS on your local environment
 *   index.js
 *   registerServiceWorker.js
 
+Core includes redux structure(redux store, redux saga)
+
+# Configuration
+### How to config .env file
+
+```
+    REACT_APP_NODE_PTH=src/
+    NODE_PATH=src/
+```
