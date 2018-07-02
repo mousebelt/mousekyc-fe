@@ -68,14 +68,16 @@ class ValidationContainer extends PureComponent {
           <Layout>
             <Content className="main">
               <Row className="validation_logo_area">
-                <Col span={5} offset={5}>
+                <Col span={14} offset={5}>
                   <img alt="true" src={logo} className="logo"/>
                 </Col>
+              </Row>
+              {/* <Row className="validation_logo_area">
                 <Col span={12} className="title_area">
                   <Row className="row_title"><Col><span  className="logo_title">NO REST</span></Col></Row>
                   <Row className="row_title"><Col><span className="logo_title">LABS</span></Col></Row>
                 </Col>
-              </Row>
+              </Row> */}
               <Row  className="validation_title_area">
                 <Col span={12} offset={6}>
                     <span className="validation_choose_title">Choose&ensp;A&ensp;Document</span>
