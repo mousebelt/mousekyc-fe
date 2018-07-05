@@ -34,7 +34,6 @@ class UploadDocContainer extends PureComponent {
         identityDocument: this.state.imgSrc
       })
         .then((userInfo) => {
-          console.log(userInfo);
           this.props.history.push('upload/match');
         })
         .catch(e => console.log(e));

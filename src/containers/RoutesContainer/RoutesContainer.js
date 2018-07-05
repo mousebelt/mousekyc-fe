@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { bindActionCreators } from 'redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import SignInContainer from 'containers/SignInContainer/SignInContainer';
@@ -10,13 +9,6 @@ import UploadSelfieContainer from 'containers/UploadSelfieContainer/UploadSelfie
 import TakePhotoContainer from 'containers/TakePhotoContainer/TakePhotoContainer';
 
 class RoutesContainer extends PureComponent {
-
-  componentWillMount() {
-  }
-
-  componentWillReceiveProps(newProps) {
-  }
-
   render () {
     return (
       <Switch>

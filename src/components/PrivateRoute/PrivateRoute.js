@@ -3,9 +3,6 @@ import { Route, Redirect } from 'react-router-dom';
 import { connectAuth } from 'core';
 
 class PrivateRoute extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render () {
     const { user, ...props } = this.props;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { store } from 'core';
 import RoutesContainer from 'containers/RoutesContainer/RoutesContainer';
 import PrivateRoute from '../components/PrivateRoute/PrivateRoute';

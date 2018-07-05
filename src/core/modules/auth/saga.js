@@ -60,7 +60,6 @@ export function* asyncGenTokenRequest({ payload, resolve, reject }) {
 
 export function* asyncUserUpdateRequest({ payload, resolve, reject }) {
   const { token, residenceCountry, docType, firstname, lastname,dob,documentExpireDate,nationalityCountry,documentId } = payload;
-  console.log(payload);
   try {
     const response = yield call(KycService,
       {
@@ -77,7 +76,6 @@ export function* asyncUserUpdateRequest({ payload, resolve, reject }) {
           documentId: documentId
         }
       });
-      console.log(response)
     if (response.status === 200) {
       yield put(authActionCreators.updateUserSuccess({ profile: response.data, docType: docType}));
       resolve(response.data);

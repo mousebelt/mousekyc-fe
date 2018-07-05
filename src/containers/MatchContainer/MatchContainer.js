@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'; 
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import { Icon, Row, Col, Button, Input, Layout, DatePicker } from 'antd';
@@ -73,7 +72,6 @@ class MatchContainer extends PureComponent {
       documentId: this.state.document_id
     })
       .then((user) => {
-        console.log(user);
         this.props.history.push('/upload/selfie');
       })
       .catch(e => console.log(e));

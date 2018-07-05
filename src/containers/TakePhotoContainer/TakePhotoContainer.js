@@ -35,7 +35,6 @@ class TakePhotoContainer extends PureComponent {
           identityDocument: this.state.imageSrc
         })
           .then((userInfo) => {
-            console.log(userInfo);
             this.props.history.push('match');
           })
           .catch(e => console.log(e));
@@ -48,7 +47,6 @@ class TakePhotoContainer extends PureComponent {
           selfie: this.state.imageSrc
         })
           .then((userInfo) => {
-            console.log(userInfo);
           })
           .catch(e => console.log(e));
       }

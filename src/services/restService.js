@@ -31,7 +31,6 @@ export async function KycService({ api, third_party, method, params }) {
       return response.json();
     })
     .then((data) => {
-      // console.log('response json data = ', data);
       if (third_party) {
         return {
           result: 'ok',
@@ -41,7 +40,6 @@ export async function KycService({ api, third_party, method, params }) {
       return data;
     })
     .catch((error) => {
-      // console.log('request error = ', error);
       return {
         result: 'error',
         message: 'Please check your internet connection!'
