@@ -1,13 +1,22 @@
 .display_match {
-    width: 600px !important;
-    height: 600px !important;
-
+    max-width: 600px !important;
+    max-height: 600px !important;
+    width: 100%;
+    height: 100%;
     .mark {
         text-align: right;
     }
 
     .matched_area {
         .matched_row {
+            @media all and (max-width: 600px) {
+                display: flex;
+                flex-direction: column;
+                input {
+                    width: 70vw;
+                }
+            }
+            
             margin-top: 15px;
 
             input {

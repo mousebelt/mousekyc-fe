@@ -84,7 +84,7 @@ class MatchContainer extends PureComponent {
           <Header className="header"></Header>
           <Layout>
             <Content className="main">
-              <Row className="sign_logo_area">
+              <Row className="validation_logo_area">
                 <Col span={14} offset={5}>
                   <img alt="true" src={logo} className="logo"/>
                 </Col>
@@ -96,7 +96,7 @@ class MatchContainer extends PureComponent {
                 </Col>
               </Row> */}
               <Row  className="validation_title_area">
-                <Col span={12} offset={8}>
+                <Col>
                     <span className="validation_choose_title">&ensp;Upload&ensp;Document</span>
                 </Col>
               </Row>
