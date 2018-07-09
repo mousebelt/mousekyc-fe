@@ -1,1 +1,1 @@
-export const apiEndpoint = 'http://54.152.190.110:3000';
+export const apiEndpoint = 'https://mousekyc-server.mousebelt.com';
