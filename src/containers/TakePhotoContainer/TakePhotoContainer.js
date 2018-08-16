@@ -47,6 +47,7 @@ class TakePhotoContainer extends PureComponent {
           selfie: this.state.imageSrc
         })
           .then((userInfo) => {
+            this.props.history.push(`/signin/${this.props.user.token}`);
           })
           .catch(e => console.log(e));
       }
