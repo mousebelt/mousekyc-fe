@@ -8,6 +8,7 @@
     "axios": "^0.18.0",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.10",
+    "merge": ">=1.2.1",
     "query-string": "^6.1.0",
     "react": "^16.3.2",
     "react-app-rewire-less": "^2.1.2",
@@ -22,7 +23,8 @@
     "redux-actions": "^2.3.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "webpack-dev-server": ">=3.1.11"
   },
   "scripts": {
     "start": "PORT=3006 react-app-rewired start",
@@ -31,8 +33,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "react-app-rewired": "^1.5.2",
-    "merge": ">=1.2.1",
-    "webpack-dev-server": ">=3.1.11"
+    "react-app-rewired": "^1.5.2"
   }
 }
